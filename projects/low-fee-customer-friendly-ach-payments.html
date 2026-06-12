@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer‑Friendly ACH Payments</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <h1>Accepting Online Payments As a Contractor</h1>
+      <h3>How I optimized customer billing using a Cloudflare worker, a static Github page and an unpopular payment provider.</h3>
+    </header>
+
+    <section>
+      <h2> PROBLEM: Accepting Credit‑Cards Is Toxic for Contractors</h2>
+      <p>
+        Most service contractors will not see any sales uplift from accepting credit‑card payments. This is largely the case because billing tends to move slowly and customers will rarely seek out expensive discretionary services without already having the funds available.
+      </p>
+      <p>
+        In addition, the typical 3% credit‑card fee applies to the entire invoice which may include reimbursement for expenses. Expenses can easily make up a third of the invoice in some industries, which can turn that 3% processing fee into effective 4.5% fee on actual service billing.
+      </p>
+      <p>
+        This creates a business problem: credit‑card processing functions as an extra tax on invoicing without delivering any corresponding benefit to the business.
+      </p>
+     
+      <h2> SOLUTION: Why An Unpopular Kind Of Payment Provider Makes Sense. </h2>
+      <p>
+        Exclusively accepting eChecks eliminates credit card fees, but popular processors like Stripe require customers to sign into their personal bank accounts through a window launched by the payment provider. This process is uncomfortable and difficult, and forcing customers to do this may delay prompt payment and create a poor experience.
+      </p>
+      <p>
+        Adding a 3% card surcharge to cover processing costs is not a viable alternative, as payment processors do not support differential pricing for cards versus eChecks, and recent industry rule changes have restricted available workarounds.
+      </p>
+      <p>
+        My solution is to exclusively accept ACH payments, and to do so using an alternative provider like Forte CSG which provides a low friction ACH payment process. 
+      </p>
+     
+      <img src="../test_2.png" class="responsive-img">
+
+       <p>
+        Forte is a completely different kind of payment provider, one more oriented for institutional users and so the setup process is alot more complicated than providers like Stripe or Paypal. The account setup requires a lot more effort, and their products require code to implement.  None the less, they do provide simple ACH payment procesing services that require only a checking account and routing number.  
+      </p>    
+    </section>
+    
+
+    <section>
+      <h2>IMPLEMENTATION: Launching Forte Checkout On A Static Github Page Using A Cloudflare Worker As A Serverless Backend </h2>
+
+      <p> Payment workflow: </p>  
+      <p>Step 1. The admin user generates a payment link by posting invoice details to the worker, which encrypts the data and returns a URL containing both plaintext parameters and an encrypted token. This payment link is then emailed to the customer along with a detailed invoice.</p>
+      <p>Step 2. The customer then opens the link which loads on a static Github page. The static site uses client-side javascript to send both the token and the plaintext parameters back to the worker which verifies the authenticity of the request by comparing the plaintext values with the contents of the encrypted token. Upon request verification, it performs some additional tasks and returns a signed token necessary to initialize the Checkout button.</p>
+      <p>Step 3. The customer is greeted with a professional payment page and a button that essentially says "Pay Now".  Upon opening the portal, all payment related details are handed off to Forte.  </p>
+
+      <img src="../test_1.png" class="responsive-img">
+    </section>
+
+    <section>
+      <h2>[Code]</h2>
+      <p>
+        Static site repository:<br>
+        <a href="https://github.com/ZimChi/TheSquareRepair" target="_blank">https://github.com/ZimChi/TheSquareRepair</a>
+        <br><br>
+        Cloudflare Worker repository:<br>
+        <a href="https://github.com/ZimChi/cf-worker-static-bridge" target="_blank">https://github.com/ZimChi/cf-worker-static-bridge</a>
+      </p>
+    </section>
+
+    <script src="../js/article.js"></script>
+  </div>
+</body>
+</html>

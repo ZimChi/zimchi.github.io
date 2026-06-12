@@ -1,0 +1,75 @@
+
+/* Article Preview Layout (90vh / 100vw) */
+.article-preview {
+    height: 90vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Aligns content to the top of the flex container */
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 10vh; /* Exactly 10% down from the top */
+    border-radius: 8px;
+    border-top: 1px solid #d0d0d0;
+}
+
+.content-wrapper {
+    max-width: 900px;
+    padding: 0 20px;
+}
+
+.article-preview h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 20px 0;
+    letter-spacing: -0.01em;
+
+}
+
+.article-preview p {
+    font-size: 1.25rem;
+    font-weight: 400;
+    max-width: 700px;
+    margin: 0 auto;
+    opacity: 0.9;
+}
+
+/* Functional CTA Link Styling */
+.article-link {
+    display: inline-block;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: inherit;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px 24px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 0px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    transition: all 0.2s ease;
+}
+
+.article-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Specific Post Coloring */
+.post-forte {
+  background-color: #2a2a2a;
+  color: #f2f2f2;
+}
+
+.post-azure {
+  background-color: #003366  ;
+  color: #f2f2f2;
+}
+
+.post-datavis {
+  background-color: #2b1f47 ;
+  color: #f2f2f2;
+
+}
