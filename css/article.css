@@ -1,82 +1,95 @@
+/* ==========================================================================
+   ARTICLE PAGE LAYOUT & THEMES
+   ========================================================================== */
 
-/* Centered reading column */
+/* Full-width blue header container */
+.home-icon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: 24px;
+}
+
+.article-header {
+  width: 100%;
+  padding: 60px 0 0 0;
+  box-sizing: border-box;
+}
+
+/* Constrained alignment wrapper inside the blue header */
+.post-header-content-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Center and flush images inside the header wrapper */
+.post-header-content-wrapper .responsive-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px auto 0 auto;
+}
+
+/* Responsive image fallback rule */
+.responsive-img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Reading column for content below the header */
 .page {
   background-color: #2a2a2a;
   color: #f2f2f2;
   max-width: 720px;
   padding: 40px 48px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   margin: 0 auto;
 }
-.responsive-img {
-  max-width: 500px;
-  margin-bottom: 1.5rem;
-  display: block;
-}
-@media (max-width: 610px) {
-  .responsive-img {
-  max-width: none;
-  width:100%;
 
-  
-  }
-  .page {
-    padding: 5px 5px;
-  }
-}  
-
-
-/* Header image — centered, soft edges, low glare */
+/* Legacy header wrapper support */
 header {
   text-align: left;
   margin-bottom: 32px;
 }
 
-
-.post-hero img {
-    width: 400px;
-    margin-bottom: 31px;
-}
-
 header img {
-  
   width: 100%;
   height: auto;
   border-radius: 6px;
   opacity: 0.9;
 }
-h1 {
-  margin-top: 42px;
-  margin-bottom: 14px;
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #f2f2f2;
-}
 
-section h2.post-title { font-size: 1.5rem; }
+/* ==========================================================================
+   TYPOGRAPHY
+   ========================================================================== */
+
+section h1.post-title {
+  font-size: 1.5rem;
+  margin-bottom:20px;
+}
 
 section h2 {
   margin-top: 3rem;
 }
 
-h2 {
-  margin-top: 2.5rem;
-  margin-bottom: 1.2rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #f2f2f2;
-
-}
-
-a {
-    color:white;
-}
-
-/* Paragraphs */
 section p {
   font-size: 1rem;
   margin: 0 0 22px 0;
-    color: #f2f2f2;
+  color: #f2f2f2;
 }
 
+/* ==========================================================================
+   RESPONSIVE OVERRIDES
+   ========================================================================== */
+
+@media (max-width: 610px) {
+  .post-header-content-wrapper,
+  .page {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

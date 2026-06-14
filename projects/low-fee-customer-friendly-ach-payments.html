@@ -13,25 +13,29 @@
 </head>
 
 <body>
+
  <div>
-  <header class="site-header"></header>
+   <a href="/" class="home-icon">&#8962;</a>
+   	
+   <section class=" article-header post-forte">
  
-
-  <div class="page post-forte">
-     
-     <section>
-      <h2 class="post-title">How I set up a low‑fee invoice payment page that doesn’t make the customer sign into their bank.</h2>
+      <div class='post-header-content-wrapper'>	
       
-      <div class="post-meta">
-        <span class="post-author">By Chielo Zimmerman</span>
-        <span class="post-divider">•</span>
-        <time datetime="2026-06-12" class="post-date">June 12, 2026</time>
-      </div>
+        <h1 class="post-title">How I set up a low‑fee invoice payment page that doesn’t make the customer sign into their bank.</h1>
+      
+        <div class="post-meta">
+          <span class="post-author">Chielo Zimmerman</span>
+          <span class="post-divider">•</span>
+          <time datetime="2026-06-12" class="post-date">June 12, 2026</time>
+        </div>
 
-      <div class="post-hero">
-        <img src="../test_5.png" alt="Easy ACH" class="hero-image">
+        <img src="../images/low-fee-checkout-preview.png" alt="Github, Cloudfront and Forte = no card fees, easy customer checkout" class="responsive-img">
       </div>
     </section>
+    
+  <div class="page">
+     
+     
 
     <section>
       <h2> PROBLEM: Accepting credit‑cards is toxic for contractors</h2>
@@ -54,7 +58,7 @@
       </p>
        <p> Here is my reasoning: </p>
      
-      <img src="../test_2.png" class="responsive-img">
+      <img src="../images/payment-processor-comparison.png" class="responsive-img">
 
        <p>
         Please note that Forte has a merchant setup process which is alot more complicated than providers like Stripe or Paypal. 
@@ -70,7 +74,7 @@
       <p>Step 2. The customer then opens the link which loads on a static Github page. The static site uses client-side javascript to send both the token and the plaintext parameters back to the worker which verifies the authenticity of the request by comparing the plaintext values with the contents of the encrypted token. Upon request verification, it performs some additional tasks and returns a signed token necessary to initialize the Checkout button.</p>
       <p>Step 3. The customer is greeted with a professional payment page and a button that essentially says "Pay Now".  Upon opening the portal, all payment related details are handed off to Forte.  </p>
 
-      <img src="../test_1.png" class="responsive-img">
+      <img src="../images/payment-workflow-diagram.png" class="responsive-img">
     </section>
 
     <section>
@@ -91,9 +95,9 @@
     window.onscroll = function() {
       const header = document.querySelector('header');
       if (window.scrollY > 100) {
-        header.classList.add('header-visible');
+        //header.classList.add('header-visible');
       } else {
-        header.classList.remove('header-visible');
+        //header.classList.remove('header-visible');
       }
     };
   </script>
