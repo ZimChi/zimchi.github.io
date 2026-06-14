@@ -11,6 +11,8 @@
 }
 .responsive-img {
   max-width: 500px;
+  margin-bottom: 1.5rem;
+  display: block;
 }
 @media (max-width: 610px) {
   .responsive-img {
@@ -25,15 +27,20 @@
 }  
 
 
-
 /* Header image — centered, soft edges, low glare */
 header {
   text-align: left;
   margin-bottom: 32px;
 }
 
+
+.post-hero img {
+    width: 400px;
+    margin-bottom: 31px;
+}
+
 header img {
-  max-width: 380px;
+  
   width: 100%;
   height: auto;
   border-radius: 6px;
@@ -46,13 +53,24 @@ h1 {
   font-weight: 600;
   color: #f2f2f2;
 }
-/* Section headings */
+
+section h2.post-title { font-size: 1.5rem; }
+
+section h2 {
+  margin-top: 3rem;
+}
+
 h2 {
-  margin-top: 42px;
-  margin-bottom: 14px;
+  margin-top: 2.5rem;
+  margin-bottom: 1.2rem;
   font-size: 1.2rem;
   font-weight: 600;
   color: #f2f2f2;
+
+}
+
+a {
+    color:white;
 }
 
 /* Paragraphs */
@@ -62,6 +80,3 @@ section p {
     color: #f2f2f2;
 }
 
-section:first-of-type h2 {
-  margin-top: 0;
-}

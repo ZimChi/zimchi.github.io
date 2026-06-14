@@ -3,50 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customer‑Friendly ACH Payments</title>
+  <title>How I set up a low‑fee invoice payment page that doesn’t make the customer sign into their bank. </title>
   <link rel="stylesheet" href="../styles.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
-  <div class="page">
-    <header>
-      <h1>Accepting Online Payments As a Contractor</h1>
-      <h3>How I optimized customer billing using a Cloudflare worker, a static Github page and an unpopular payment provider.</h3>
-    </header>
+ <div>
+  <header class="site-header"></header>
+ 
+
+  <div class="page post-forte">
+     
+     <section>
+      <h2 class="post-title">How I set up a low‑fee invoice payment page that doesn’t make the customer sign into their bank.</h2>
+      
+      <div class="post-meta">
+        <span class="post-author">By Chielo Zimmerman</span>
+        <span class="post-divider">•</span>
+        <time datetime="2026-06-12" class="post-date">June 12, 2026</time>
+      </div>
+
+      <div class="post-hero">
+        <img src="../test_5.png" alt="Easy ACH" class="hero-image">
+      </div>
+    </section>
 
     <section>
-      <h2> PROBLEM: Accepting Credit‑Cards Is Toxic for Contractors</h2>
+      <h2> PROBLEM: Accepting credit‑cards is toxic for contractors</h2>
       <p>
-        Most service contractors will not see any sales uplift from accepting credit‑card payments. This is largely the case because billing tends to move slowly and customers will rarely seek out expensive discretionary services without already having the funds available.
+        Most service contractors see no sales uplift from accepting credit‑card payments. Service invoicing moves slowly and customers rarely seek professional services without available funds.
       </p>
       <p>
-        In addition, the typical 3% credit‑card fee applies to the entire invoice which may include reimbursement for expenses. Expenses can easily make up a third of the invoice in some industries, which can turn that 3% processing fee into effective 4.5% fee on actual service billing.
-      </p>
-      <p>
-        This creates a business problem: credit‑card processing functions as an extra tax on invoicing without delivering any corresponding benefit to the business.
+        The 3% credit‑card fee is expensive, but it also applies to reimbursement for expenses. If expenses make up a third of the invoice, the effective processing fee reaches 4.5%.
       </p>
      
-      <h2> SOLUTION: Why An Unpopular Kind Of Payment Provider Makes Sense. </h2>
+      <h2> SOLUTION: Why A Different Payment Processor Makes Sense. </h2>
       <p>
-        Exclusively accepting eChecks eliminates credit card fees, but popular processors like Stripe require customers to sign into their personal bank accounts through a window launched by the payment provider. This process is uncomfortable and difficult, and forcing customers to do this may delay prompt payment and create a poor experience.
+        Exclusively accepting eChecks significantly reduces fees, but popular processors like Stripe require customers to sign into their personal bank accounts through a window launched by the payment provider. This is uncomfortable and difficult and may delay prompt payment if there is no credit card option available for the customer to fall back on.
       </p>
       <p>
-        Adding a 3% card surcharge to cover processing costs is not a viable alternative, as payment processors do not support differential pricing for cards versus eChecks, and recent industry rule changes have restricted available workarounds.
+        Adding a 3% card surcharge to cover processing costs is not viable, as popular payment processors do not support differential pricing for cards versus eChecks, and recent industry rule changes have restricted available workarounds.
       </p>
       <p>
-        My solution is to exclusively accept ACH payments, and to do so using an alternative provider like Forte CSG which provides a low friction ACH payment process. 
+        My solution is to exclusively accept ACH payments, and to do so using the payment processor Forte CSG which can be configured to offer an easy checkout process for the customer. 
       </p>
+       <p> Here is my reasoning: </p>
      
       <img src="../test_2.png" class="responsive-img">
 
        <p>
-        Forte is a completely different kind of payment provider, one more oriented for institutional users and so the setup process is alot more complicated than providers like Stripe or Paypal. The account setup requires a lot more effort, and their products require code to implement.  None the less, they do provide simple ACH payment procesing services that require only a checking account and routing number.  
+        Please note that Forte has a merchant setup process which is alot more complicated than providers like Stripe or Paypal. 
       </p>    
     </section>
     
 
     <section>
-      <h2>IMPLEMENTATION: Launching Forte Checkout On A Static Github Page Using A Cloudflare Worker As A Serverless Backend </h2>
+      <h2>IMPLEMENTATION: Launching Forte Checkout On A Static Github Page Using A Cloudflare Worker As Serverless Backend </h2>
 
       <p> Payment workflow: </p>  
       <p>Step 1. The admin user generates a payment link by posting invoice details to the worker, which encrypts the data and returns a URL containing both plaintext parameters and an encrypted token. This payment link is then emailed to the customer along with a detailed invoice.</p>
@@ -57,17 +74,29 @@
     </section>
 
     <section>
-      <h2>[Code]</h2>
+      <h2>Code</h2>
       <p>
-        Static site repository:<br>
+        Static site repository:
         <a href="https://github.com/ZimChi/TheSquareRepair" target="_blank">https://github.com/ZimChi/TheSquareRepair</a>
-        <br><br>
-        Cloudflare Worker repository:<br>
+      </p>
+      <p>
+        Cloudflare Worker repository:
         <a href="https://github.com/ZimChi/cf-worker-static-bridge" target="_blank">https://github.com/ZimChi/cf-worker-static-bridge</a>
       </p>
     </section>
 
     <script src="../js/article.js"></script>
+    <script src="../partials/partial-loader.js"></script>
+    <script>
+    window.onscroll = function() {
+      const header = document.querySelector('header');
+      if (window.scrollY > 100) {
+        header.classList.add('header-visible');
+      } else {
+        header.classList.remove('header-visible');
+      }
+    };
+  </script>
   </div>
 </body>
 </html>
