@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building a Secure Express App Inside a Docker Container</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+</head>
+
+<body>
+ <div>
+   <a href="/" class="home-icon">&#8962;</a>
+   <section class="article-header post-forte">
+      <div class="post-header-content-wrapper">
+        <h1 class="post-title">How I Containerize My Dev Environments to Stay Safe From Supply‑Chain Attacks</h1>
+        <div class="post-meta">
+          <span class="post-author">Chielo Zimmerman</span>
+          <!-- <span class="post-divider">•</span>
+          <time datetime="" class="post-date"></time> -->
+        </div>
+        <img src="images/dockerized_env.png" alt="Secure Express app running inside a Docker container" class="responsive-img">
+      </div>
+    </section>
+
+  <div class="page">
+    <section>
+      <h2>PROBLEM</h2>
+      <p>Supply chain attacks succeed by hijacking familiar and trusted tools and libraries. </p>
+      <p>Zero trust is neccessary; any given community project may have hidden malicious scripts.</p>
+
+
+    </section>
+
+    <section>
+      <h2>SOLUTION</h2>
+      <p>Build each development project within a Docker container.</p>
+    </section>
+
+    <section>
+      <h2>IMPLEMENTATION EXAMPLE</h2>
+
+      <h3>Dockerfile</h3>
+      <pre><code>FROM node:24-alpine
+
+RUN apk add --no-cache bash shadow curl \
+    && curl -sSL https://github.com/tianon/gosu/releases/download/1.17/gosu-amd64 -o /usr/local/bin/gosu \
+    && chmod +x /usr/local/bin/gosu
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+WORKDIR /app
+EXPOSE 3000
+
+ENTRYPOINT ["/bin/sh"]
+CMD ["/usr/local/bin/entrypoint.sh", "/bin/sh"]</code></pre>
+
+      <h3>Entrypoint.sh</h3>
+      <p class="note">Ensures new files owned by host user; uses gosu.</p>
+      <pre><code>#!/bin/bash
+set -e
+
+USER_ID=${HOST_UID:-1000}
+GROUP_ID=${HOST_GID:-1000}
+
+EXISTING_GROUP=$(getent group "$GROUP_ID" | cut -d: -f1 || true)
+if [ -n "$EXISTING_GROUP" ]; then
+    GROUP_NAME="$EXISTING_GROUP"
+else
+    GROUP_NAME="npmuser"
+    groupadd -g "$GROUP_ID" "$GROUP_NAME"
+fi
+
+EXISTING_USER=$(getent passwd "$USER_ID" | cut -d: -f1 || true)
+if [ -n "$EXISTING_USER" ]; then
+    USER_NAME="$EXISTING_USER"
+else
+    USER_NAME="npmuser"
+    useradd -u "$USER_ID" -g "$GROUP_ID" -m -s /bin/bash "$USER_NAME"
+fi
+
+exec gosu "$USER_NAME" "$@"</code></pre>
+
+      <h3>Build and Run</h3>
+      <pre><code>docker buildx build -t express-app-image .
+docker run -p 3000:3000 -it -v "$PWD":/app express-app-image</code></pre>
+
+      <h3>Inside the Container</h3>
+      <pre><code>npm install -g express-generator
+npx express-generator my-app
+cd my-app
+npm install
+npm start</code></pre>
+
+      <h3>Devmode</h3>
+      <pre><code>http://localhost:3000</code></pre>
+    </section>
+
+  </div>
+</body>
+</html>
