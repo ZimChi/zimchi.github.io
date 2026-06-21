@@ -1,16 +1,14 @@
-/* ==========================================================================
-   ARTICLE PAGE LAYOUT & THEMES
-   ========================================================================== */
 
-/* Full-width blue header container */
 .home-icon {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: #f2f2f2;
-  text-decoration: none;
-  font-size: 24px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    font-size: 24px;
+    color: white; /* base color */
+    mix-blend-mode: difference;
 }
+
 
 .article-header {
   width: 100%;
@@ -18,14 +16,14 @@
   box-sizing: border-box;
 }
 
-/* Constrained alignment wrapper inside the blue header */
+
 .post-header-content-wrapper {
   max-width: 720px;
   margin: 0 auto;
   box-sizing: border-box;
 }
 
-/* Center and flush images inside the header wrapper */
+
 .post-header-content-wrapper .responsive-img {
   max-width: 100%;
   height: auto;
@@ -33,13 +31,13 @@
   margin: 10px auto 0 auto;
 }
 
-/* Responsive image fallback rule */
+
 .responsive-img {
   max-width: 100%;
   height: auto;
 }
 
-/* Reading column for content below the header */
+
 .page {
   background-color: #2a2a2a;
   color: #f2f2f2;
@@ -50,7 +48,6 @@
   margin: 0 auto;
 }
 
-/* Legacy header wrapper support */
 header {
   text-align: left;
   margin-bottom: 32px;
@@ -62,10 +59,6 @@ header img {
   border-radius: 6px;
   opacity: 0.9;
 }
-
-/* ==========================================================================
-   TYPOGRAPHY
-   ========================================================================== */
 
 section h1.post-title {
   font-size: 1.5rem;
@@ -82,10 +75,6 @@ section p {
   color: #f2f2f2;
 }
 
-/* ==========================================================================
-   RESPONSIVE OVERRIDES
-   ========================================================================== */
-
 @media (max-width: 610px) {
   .post-header-content-wrapper,
   .page {
@@ -93,10 +82,6 @@ section p {
     padding-right: 20px;
   }
 }
-
-/* ==========================================================================
-   CODE BLOCKS
-   ========================================================================== */
 
 pre {
   font-family: "Fira Mono", Menlo, Monaco, Consolas, "Courier New", monospace;

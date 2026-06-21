@@ -1,12 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How I set up a low‑fee invoice payment page that doesn’t make the customer sign into their bank. </title>
-  <link rel="stylesheet" href="../styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles.css" />
+
+    <title>How I set up a low‑fee invoice payment page that doesn’t make the customer sign into their bank.</title>
+
+    <meta name="description" content="Most service contractors see no sales uplift from accepting credit‑card payments. Exclusively accepting ACH payments through the payment processor Forte CSG can be configured to offer a checkout process which does not require the customer to sign into their bank account.">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="">
+
+    <meta property="og:title" content="How I set up a low‑fee invoice payment page that doesn’t make the customer sign into their bank.">
+    <meta property="og:description" content="Most service contractors see no sales uplift from accepting credit‑card payments. Exclusively accepting ACH payments through the payment processor Forte CSG can be configured to offer a checkout process which does not require the customer to sign into their bank account.">
+    <meta property="og:image" content="images/low-fee-checkout.png">
+    <meta property="og:url" content="">
+    <meta property="og:type" content="article">
+
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "How I set up a low‑fee invoice payment page that doesn’t make the customer sign into their bank.",
+      "description": "Most service contractors see no sales uplift from accepting credit‑card payments. Exclusively accepting ACH payments through the payment processor Forte CSG can be configured to offer a checkout process which does not require the customer to sign into their bank account.",
+      "image": [
+        "images/low-fee-checkout.png",
+        "images/payment-workflow-diagram.png"
+      ],
+      "thumbnailUrl": "images/low-fee-checkout.png",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": ""
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Chielo Zimmerman"
+      },
+      "publisher": {
+        "@context": "https://schema.org",
+         "@type": "ProfessionalService",
+         "name": "ZimChi",
+         "url": "",
+         "serviceType": "Custom Software Development",
+         "description": "A technical studio providing custom software development and architectural consulting.",
+         "sameAs": [
+           "https://github.com/ZimChi"
+         ]
+      }
+    }
+    </script>
 </head>
+
 
 <body>
  <div>
@@ -19,7 +68,7 @@
           <!-- <span class="post-divider">•</span>
           <time datetime="" class="post-date"></time> -->
         </div>
-        <img src="images/low-fee-checkout-preview.png" alt="Github, Cloudfront and Forte = no card fees, easy customer checkout" class="responsive-img">
+        <img src="images/low-fee-checkout.png" alt="Github, Cloudfront and Forte = no card fees, easy customer checkout" class="responsive-img">
       </div>
     </section>
 
@@ -41,23 +90,17 @@
         Adding a 3% card surcharge to cover processing costs is not viable, as popular payment processors do not support differential pricing for cards versus eChecks, and recent industry rule changes have restricted available workarounds.
       </p>
       <p>
-        My solution is to exclusively accept ACH payments, and to do so using the payment processor Forte CSG which can be configured to offer an easy checkout process for the customer.
+        My solution is to exclusively accept ACH payments through the payment processor Forte CSG which can be configured to offer a checkout process which does not require the customer to sign into their bank account.
       </p>
-       <p> Here is my reasoning: </p>
 
-      <img src="images/payment-processor-comparison.png" class="responsive-img">
-
-       <p>
-        Please note that Forte has a merchant setup process which is alot more complicated than providers like Stripe or Paypal.
-      </p>
     </section>
 
 
     <section>
-      <h2>IMPLEMENTATION: Launching Forte Checkout On A Static Github Page Using A Cloudflare Worker As Serverless Backend </h2>
+      <h2>IMPLEMENTATION: Launch Forte Checkout On A Static Github Page Using A Cloudflare Worker As Serverless Backend </h2>
 
       <p> Payment workflow: </p>
-      <p>Step 1. The admin user generates a payment link by posting invoice details to the worker, which encrypts the data and returns a URL containing both plaintext parameters and an encrypted token. This payment link is then emailed to the customer along with a detailed invoice.</p>
+      <p>Step 1. The admin user generates a payment link by posting invoice details to the cloudflare worker. The worker encrypts the data and returns a URL containing both plaintext parameters and an encrypted token. This payment link is then emailed to the customer along with a detailed invoice.</p>
       <p>Step 2. The customer then opens the link which loads on a static Github page. The static site uses client-side javascript to send both the token and the plaintext parameters back to the worker which verifies the authenticity of the request by comparing the plaintext values with the contents of the encrypted token. Upon request verification, it performs some additional tasks and returns a signed token necessary to initialize the Checkout button.</p>
       <p>Step 3. The customer is greeted with a professional payment page and a button that essentially says "Pay Now".  Upon opening the portal, all payment related details are handed off to Forte.  </p>
 

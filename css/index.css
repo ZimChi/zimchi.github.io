@@ -16,23 +16,20 @@
   align-items: center;
   text-align: center;
   box-sizing: border-box;
-  border-top: 1px solid #d0d0d0;
 }
 
 @media (max-width: 610px) {
   .article-preview {
     padding: 5px;
-    
+
   }
 }
 
 .article-preview h2 {
   font-size: 1.25rem;
-  font-weight: 400;
   max-width: 700px;
   margin: 0 auto;
   opacity: 0.9;
-  color: white;
 }
 
 .article-preview p {
@@ -41,7 +38,7 @@
   max-width: 700px;
   margin: 0 auto;
   opacity: 0.9;
-  color: white;
+  color: inherit;
 }
 
 .article-link {
@@ -51,9 +48,8 @@
   font-size: 0.9rem;
   color: inherit;
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.1);
   padding: 12px 24px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  border: 2px solid currentColor; /* Automatically matches the text color of the parent post */
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -61,10 +57,6 @@
 }
 
 .article-link:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.9);
+  background: rgba(0, 0, 0, 0.15);
+  border-color: currentColor;
 }
-
-
-
-
