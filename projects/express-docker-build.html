@@ -11,7 +11,7 @@
 <body>
  <div>
    <a href="/" class="home-icon">&#8962;</a>
-   <section class="article-header post-forte">
+   <section class="article-header post-dockerized-node">
       <div class="post-header-content-wrapper">
         <h1 class="post-title">How I Containerize My Dev Environments to Stay Safe From Supply‑Chain Attacks</h1>
         <div class="post-meta">
@@ -26,15 +26,13 @@
   <div class="page">
     <section>
       <h2>PROBLEM</h2>
-      <p>Supply chain attacks succeed by hijacking familiar and trusted tools and libraries. </p>
+      <p>Supply chain attacks succeed by hijacking trusted tools and libraries. </p>
       <p>Zero trust is neccessary; any given community project may have hidden malicious scripts.</p>
-
-
     </section>
 
     <section>
       <h2>SOLUTION</h2>
-      <p>Build each development project within a Docker container.</p>
+      <p>Build each development project within a Docker container</p>
     </section>
 
     <section>
@@ -56,13 +54,12 @@ EXPOSE 3000
 ENTRYPOINT ["/bin/sh"]
 CMD ["/usr/local/bin/entrypoint.sh", "/bin/sh"]</code></pre>
 
-      <h3>Entrypoint.sh</h3>
-      <p class="note">Ensures new files owned by host user; uses gosu.</p>
+      <h3>entrypoint.sh - Ensure new files owned by host user. Place next to Dockerfile</h3>
       <pre><code>#!/bin/bash
 set -e
 
-USER_ID=${HOST_UID:-1000}
-GROUP_ID=${HOST_GID:-1000}
+USER_ID=$HOST_UID
+GROUP_ID=$HOST_GID
 
 EXISTING_GROUP=$(getent group "$GROUP_ID" | cut -d: -f1 || true)
 if [ -n "$EXISTING_GROUP" ]; then
@@ -82,18 +79,18 @@ fi
 
 exec gosu "$USER_NAME" "$@"</code></pre>
 
-      <h3>Build and Run</h3>
+      <h3>Open ports for browser, mount current directory to the docker, pass host user and group id </h3>
       <pre><code>docker buildx build -t express-app-image .
-docker run -p 3000:3000 -it -v "$PWD":/app express-app-image</code></pre>
+docker run -p 3000:3000 -it -v "$PWD":/app -e HOST_UID="$(id -u)" -e HOST_GID="$(id -g)" express-app-image</code></pre>
 
-      <h3>Inside the Container</h3>
-      <pre><code>npm install -g express-generator
+      <h3>Inside the container; do normal web development stuff</h3>
+      <pre><code>npm install express-generator
 npx express-generator my-app
 cd my-app
 npm install
 npm start</code></pre>
 
-      <h3>Devmode</h3>
+      <h3>Inspect with browser</h3>
       <pre><code>http://localhost:3000</code></pre>
     </section>
 

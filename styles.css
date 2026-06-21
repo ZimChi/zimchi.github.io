@@ -16,7 +16,7 @@ body {
   margin-bottom: 1.5rem;
   width: 100%;
 }
-  
+
 
 a {
   color: white;
@@ -32,7 +32,7 @@ a {
   background: #4255b1;
 }
 
-.post-azure {
-  background-color: #305036;
+.post-dockerized-node {
+  background-color: #737574;
   color: #f2f2f2;
 }
