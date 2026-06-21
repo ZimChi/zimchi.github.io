@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>How I set up a low‑fee invoice payment page that doesn’t make the customer sign into their bank.</title>
+  <title>How I containerize dependency installs to stay safe from supply‑chain attacks.</title>
 
-  <meta name="description" content="Most service contractors see no sales uplift from accepting credit‑card payments. Exclusively accepting ACH payments through the payment processor Forte CSG can be configured to offer a checkout process which does not require the customer to sign into their bank account.">
+  <meta name="description" content="Public package ecosystems execute untrusted code during dependency installation. By running dependency installs, application execution, and all developer‑console work inside Docker containers, I reduce my exposure to supply‑chain attacks.">
   <meta name="robots" content="index, follow">
 
   <link rel="canonical" href="">
@@ -15,9 +15,9 @@
   <link rel="stylesheet" href="../styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
 
-  <meta property="og:title" content="How I set up a low‑fee invoice payment page that doesn’t make the customer sign into their bank.">
-  <meta property="og:description" content="Most service contractors see no sales uplift from accepting credit‑card payments. Exclusively accepting ACH payments through the payment processor Forte CSG can be configured to offer a checkout process which does not require the customer to sign into their bank account.">
-  <meta property="og:image" content="images/low-fee-checkout.png">
+  <meta property="og:title" content="How I containerize dependency installs to stay safe from supply‑chain attacks.">
+  <meta property="og:description" content="Public package ecosystems execute untrusted code during dependency installation. By running dependency installs, application execution, and all developer‑console work inside Docker containers, I reduce my exposure to supply‑chain attacks.">
+  <meta property="og:image" content="images/containerized-dev-workflow.png">
   <meta property="og:url" content="">
   <meta property="og:type" content="article">
 
@@ -25,13 +25,13 @@
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "How I set up a low‑fee invoice payment page that doesn’t make the customer sign into their bank.",
-    "description": "Most service contractors see no sales uplift from accepting credit‑card payments. Exclusively accepting ACH payments through the payment processor Forte CSG can be configured to offer a checkout process which does not require the customer to sign into their bank account.",
+    "headline": "How I containerize dependency installs to stay safe from supply‑chain attacks.",
+    "description": "Public package ecosystems execute untrusted code during dependency installation. By running dependency installs, application execution, and all developer‑console work inside Docker containers, I reduce my exposure to supply‑chain attacks.",
     "image": [
-      "images/low-fee-checkout.png",
-      "images/payment-workflow-diagram.png"
+      "images/containerized-dev-workflow.png",
+      "images/dependency-install-boundary.png"
     ],
-    "thumbnailUrl": "images/low-fee-checkout.png",
+    "thumbnailUrl": "images/containerized-dev-workflow.png",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": ""
@@ -59,11 +59,9 @@
    <a href="/" class="home-icon">&#8962;</a>
    <section class="article-header post-dockerized-node">
       <div class="post-header-content-wrapper">
-        <h1 class="post-title">How I containerize my dev environments to stay safe from supply‑chain attacks</h1>
+        <h1 class="post-title">How I containerize dependency installs to stay safe from supply‑chain attacks.</h1>
         <div class="post-meta">
           <span class="post-author">Chielo Zimmerman</span>
-          <!-- <span class="post-divider">•</span>
-          <time datetime="" class="post-date"></time> -->
         </div>
         <img src="images/dockerized_env.png" alt="Secure Express app running inside a Docker container" class="responsive-img">
       </div>
@@ -72,71 +70,72 @@
   <div class="page">
     <section>
       <h2>PROBLEM</h2>
-      <p>Supply chain attacks succeed by hijacking trusted tools and libraries. </p>
-      <p>Zero trust is necessary; any given community project may have hidden malicious scripts.</p>
+      <p>
+        Supply‑chain attacks target developer workstations by compromising the dependencies required to run applications under development.
+        <p>
+        Common dependencies in public package ecosystems involve many distributed contributors, making it easier for malicious actors to hide harmful code in legitimate changes or compromise a maintainer with publish access.
+        </p>
+
     </section>
 
     <section>
       <h2>SOLUTION</h2>
-      <p>Build each development project within a Docker container</p>
+      <p>
+        Apply zero‑trust principles by installing dependencies from public package ecosystems inside Docker containers.
+      </p>
+      <p>
+      </p>
+
     </section>
 
     <section>
       <h2>IMPLEMENTATION EXAMPLE</h2>
-
       <h3>Dockerfile</h3>
-      <pre><code >FROM node:24-alpine
+      <pre><code>
+
+FROM node:24-alpine
 
 RUN apk add --no-cache bash shadow curl \
-    && curl -sSL https://github.com/tianon/gosu/releases/download/1.17/gosu-amd64 -o /usr/local/bin/gosu \
+    && curl -sSL https://github.com/tianon/gosu/releases/download/1.17/gosu-amd64 \
+         -o /usr/local/bin/gosu \
     && chmod +x /usr/local/bin/gosu
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY normalize-user.sh /usr/local/bin/normalize-user.sh
+RUN chmod +x /usr/local/bin/normalize-user.sh
 
 WORKDIR /app
-EXPOSE 3000
 
-ENTRYPOINT ["/bin/sh"]
-CMD ["/usr/local/bin/entrypoint.sh", "/bin/sh"]</code></pre>
+ENTRYPOINT ["/usr/local/bin/normalize-user.sh"]
 
-      <h3>entrypoint.sh - Ensure new files owned by host user. Place next to Dockerfile</h3>
-      <pre><code>#!/bin/bash
+      </code></pre>
+
+      <h3> normalize-user.sh - Place next to Dockerfile</h3>
+      <pre><code>#!/bin/sh
 set -e
 
-USER_ID=$HOST_UID
-GROUP_ID=$HOST_GID
+# Create an in‑container user matching the host's UID/GID
+addgroup -g "$HOST_GID" containeruser
+adduser -D -u "$HOST_UID" -G containeruser containeruser
 
-EXISTING_GROUP=$(getent group "$GROUP_ID" | cut -d: -f1 || true)
-if [ -n "$EXISTING_GROUP" ]; then
-    GROUP_NAME="$EXISTING_GROUP"
-else
-    GROUP_NAME="npmuser"
-    groupadd -g "$GROUP_ID" "$GROUP_NAME"
-fi
+# Open shell as new user
+exec gosu containeruser /bin/sh
+</code></pre>
 
-EXISTING_USER=$(getent passwd "$USER_ID" | cut -d: -f1 || true)
-if [ -n "$EXISTING_USER" ]; then
-    USER_NAME="$EXISTING_USER"
-else
-    USER_NAME="npmuser"
-    useradd -u "$USER_ID" -g "$GROUP_ID" -m -s /bin/bash "$USER_NAME"
-fi
-
-exec gosu "$USER_NAME" "$@"</code></pre>
-
-      <h3>Open ports for browser, mount current directory to the docker, pass host user and group id </h3>
+      <h3>Run docker</h3>
       <pre><code>docker buildx build -t express-app-image .
 docker run -p 3000:3000 -it -v "$PWD":/app -e HOST_UID="$(id -u)" -e HOST_GID="$(id -g)" express-app-image</code></pre>
 
-      <h3>Inside the container; do normal web development stuff</h3>
-      <pre><code>npm install express-generator
+      <h3>Do stuff within the Docker container shell.</h3>
+      <pre><code>
+npm install express-generator
 npx express-generator my-app
 cd my-app
 npm install
-npm start</code></pre>
+npm start
 
-      <h3>Inspect with browser</h3>
+</code></pre>
+
+      <h3>Inspect with host browser</h3>
       <pre><code>http://localhost:3000</code></pre>
     </section>
 
