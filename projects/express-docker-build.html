@@ -91,23 +91,19 @@
     <section>
       <h2>IMPLEMENTATION EXAMPLE</h2>
       <h3>Dockerfile</h3>
-      <pre><code>
-
-FROM node:alpine
+      <pre><code>FROM node:alpine
 WORKDIR /app
-
       </code></pre>
 
       <h3>Run docker</h3>
-      <pre><code>
-         docker buildx build -t express-app-image .
-         docker run -p 3000:3000 -it -v "$PWD":/app --user "$(id -u):$(id -g)" express-app-image /bin/sh
+      <pre><code>docker buildx build -t express-app-image .
+docker run -p 3000:3000 -it -v "$PWD":/app --user "$(id -u):$(id -g)" express-app-image /bin/sh
       </code></pre>
 
       <h3>Do stuff within the Docker container shell.</h3>
-      <pre><code>
-npm install express-generator
-npx express-generator my_app
+      <pre><code>npm install express-generator
+npx express-generator myapp
+cd myapp
 npm install
 npm start
 
