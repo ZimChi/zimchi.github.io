@@ -93,43 +93,21 @@
       <h3>Dockerfile</h3>
       <pre><code>
 
-FROM node:24-alpine
-
-RUN apk add --no-cache bash shadow curl \
-    && curl -sSL https://github.com/tianon/gosu/releases/download/1.17/gosu-amd64 \
-         -o /usr/local/bin/gosu \
-    && chmod +x /usr/local/bin/gosu
-
-COPY normalize-user.sh /usr/local/bin/normalize-user.sh
-RUN chmod +x /usr/local/bin/normalize-user.sh
-
+FROM node:alpine
 WORKDIR /app
-
-ENTRYPOINT ["/usr/local/bin/normalize-user.sh"]
 
       </code></pre>
 
-      <h3> normalize-user.sh - Place next to Dockerfile</h3>
-      <pre><code>#!/bin/sh
-set -e
-
-# Create an in‑container user matching the host's UID/GID
-addgroup -g "$HOST_GID" containeruser
-adduser -D -u "$HOST_UID" -G containeruser containeruser
-
-# Open shell as new user
-exec gosu containeruser /bin/sh
-</code></pre>
-
       <h3>Run docker</h3>
-      <pre><code>docker buildx build -t express-app-image .
-docker run -p 3000:3000 -it -v "$PWD":/app -e HOST_UID="$(id -u)" -e HOST_GID="$(id -g)" express-app-image</code></pre>
+      <pre><code>
+         docker buildx build -t express-app-image .
+         docker run -p 3000:3000 -it -v "$PWD":/app --user "$(id -u):$(id -g)" express-app-image /bin/sh
+      </code></pre>
 
       <h3>Do stuff within the Docker container shell.</h3>
       <pre><code>
 npm install express-generator
-npx express-generator my-app
-cd my-app
+npx express-generator my_app
 npm install
 npm start
 
