@@ -5,36 +5,51 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>How I containerize dependency installs to stay safe from supply‑chain attacks.</title>
+  <title>Using Docker to Contain Supply-Chain Attacks</title>
 
-  <meta name="description" content="Public package ecosystems execute untrusted code during dependency installation. By running dependency installs, application execution, and all developer‑console work inside Docker containers, I reduce my exposure to supply‑chain attacks.">
+  <meta name="description" content="Public package ecosystems execute untrusted code during dependency installation. Running installs, application execution, and all developer-console work inside Docker containers limits the damage from a compromised package.">
+  <meta name="author" content="Chielo Zimmerman">
   <meta name="robots" content="index, follow">
 
-  <link rel="canonical" href="">
+  <link rel="canonical" href="https://zimchi.github.io/projects/express-docker-build.html">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="stylesheet" href="../styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
 
-  <meta property="og:title" content="How I containerize dependency installs to stay safe from supply‑chain attacks.">
-  <meta property="og:description" content="Public package ecosystems execute untrusted code during dependency installation. By running dependency installs, application execution, and all developer‑console work inside Docker containers, I reduce my exposure to supply‑chain attacks.">
-  <meta property="og:image" content="images/containerized-dev-workflow.png">
-  <meta property="og:url" content="">
+  <meta property="og:title" content="Using Docker to Contain Supply-Chain Attacks">
+  <meta property="og:description" content="Public package ecosystems execute untrusted code during dependency installation. Running installs, application execution, and all developer-console work inside Docker containers limits the damage from a compromised package.">
+  <meta property="og:image" content="https://zimchi.github.io/projects/images/dockerized_env.png">
+  <meta property="og:image:alt" content="Secure Express app running inside a Docker container">
+  <meta property="og:url" content="https://zimchi.github.io/projects/express-docker-build.html">
   <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ZimChi">
+  <meta property="og:locale" content="en_US">
+  <meta property="article:author" content="Chielo Zimmerman">
+  <meta property="article:published_time" content="2026-10-05">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Using Docker to Contain Supply-Chain Attacks">
+  <meta name="twitter:description" content="Public package ecosystems execute untrusted code during dependency installation. Running installs, application execution, and all developer-console work inside Docker containers limits the damage from a compromised package.">
+  <meta name="twitter:image" content="https://zimchi.github.io/projects/images/dockerized_env.png">
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "How I containerize dependency installs to stay safe from supply‑chain attacks.",
-    "description": "Public package ecosystems execute untrusted code during dependency installation. By running dependency installs, application execution, and all developer‑console work inside Docker containers, I reduce my exposure to supply‑chain attacks.",
+    "headline": "Using Docker to Contain Supply-Chain Attacks",
+    "description": "Public package ecosystems execute untrusted code during dependency installation. Running installs, application execution, and all developer-console work inside Docker containers limits the damage from a compromised package.",
     "image": [
-      "images/containerized-dev-workflow.png",
-      "images/dependency-install-boundary.png"
+      "https://zimchi.github.io/projects/images/dockerized_env.png"
     ],
-    "thumbnailUrl": "images/containerized-dev-workflow.png",
+    "thumbnailUrl": "https://zimchi.github.io/projects/images/dockerized_env.png",
+    "datePublished": "2026-10-05",
+    "dateModified": "2026-10-05",
+    "inLanguage": "en",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": ""
+      "@id": "https://zimchi.github.io/projects/express-docker-build.html"
     },
     "author": {
       "@type": "Person",
@@ -43,7 +58,7 @@
     "publisher": {
       "@type": "ProfessionalService",
       "name": "ZimChi",
-      "url": "",
+      "url": "https://zimchi.github.io/",
       "serviceType": "Custom Software Development",
       "description": "A technical studio providing custom software development and architectural consulting.",
       "sameAs": [
@@ -55,11 +70,11 @@
 </head>
 
 <body>
- <div>
-   <a href="/" class="home-icon">&#8962;</a>
-   <section class="article-header post-dockerized-node">
+  <div>
+    <a href="/" class="home-icon" aria-label="Home">&#8962;</a>
+    <section class="article-header post-dockerized-node">
       <div class="post-header-content-wrapper">
-        <h1 class="post-title">How I containerize dependency installs to stay safe from supply‑chain attacks.</h1>
+        <h1 class="post-title">Using Docker to Contain Supply-Chain Attacks</h1>
         <div class="post-meta">
           <span class="post-author">Chielo Zimmerman</span>
         </div>
@@ -67,52 +82,47 @@
       </div>
     </section>
 
-  <div class="page">
-    <section>
-      <h2>PROBLEM</h2>
-      <p>
-        Supply‑chain attacks target developer workstations by compromising the dependencies required to run applications under development.
+    <div class="page">
+      <section>
+        <h2>PROBLEM</h2>
         <p>
-        Common dependencies in public package ecosystems involve many distributed contributors, making it easier for malicious actors to hide harmful code in legitimate changes or compromise a maintainer with publish access.
+          Supply-chain attacks target developer workstations by compromising the dependencies required to run applications under development.
         </p>
+        <p>
+          Common dependencies in public package ecosystems involve many distributed contributors, making it easier for malicious actors to hide harmful code in legitimate changes or compromise a maintainer with publish access.
+        </p>
+      </section>
 
-    </section>
+      <section>
+        <h2>SOLUTION</h2>
+        <p>
+          Apply zero-trust principles by installing dependencies from public package ecosystems inside Docker containers.
+        </p>
+      </section>
 
-    <section>
-      <h2>SOLUTION</h2>
-      <p>
-        Apply zero‑trust principles by installing dependencies from public package ecosystems inside Docker containers.
-      </p>
-      <p>
-      </p>
+      <section>
+        <h2>EXAMPLE</h2>
 
-    </section>
+        <h3>Dockerfile</h3>
+        <pre><code>FROM node:alpine
+WORKDIR /app</code></pre>
 
-    <section>
-      <h2>IMPLEMENTATION EXAMPLE</h2>
-      <h3>Dockerfile</h3>
-      <pre><code>FROM node:alpine
-WORKDIR /app
-      </code></pre>
+        <h3>Run docker</h3>
+        <pre><code>docker buildx build -t express-app-image .
+docker run -p 3000:3000 -it -v "$PWD":/app --user "$(id -u):$(id -g)" express-app-image /bin/sh</code></pre>
 
-      <h3>Run docker</h3>
-      <pre><code>docker buildx build -t express-app-image .
-docker run -p 3000:3000 -it -v "$PWD":/app --user "$(id -u):$(id -g)" express-app-image /bin/sh
-      </code></pre>
-
-      <h3>Do stuff within the Docker container shell.</h3>
-      <pre><code>npm install express-generator
+        <h3>Work inside the container shell</h3>
+        <pre><code>npm install express-generator
 npx express-generator myapp
 cd myapp
 npm install
-npm start
+npm start</code></pre>
 
-</code></pre>
+        <h3>Inspect with host browser</h3>
+        <pre><code>http://localhost:3000</code></pre>
+      </section>
 
-      <h3>Inspect with host browser</h3>
-      <pre><code>http://localhost:3000</code></pre>
-    </section>
-
+    </div>
   </div>
 </body>
 </html>
