@@ -12,6 +12,10 @@ footer p {
     letter-spacing: 0.05em;
 }
 
+footer a {
+    color: inherit;
+}
+
 .footer-email {
     font-size: 1rem;
     text-transform: lowercase;

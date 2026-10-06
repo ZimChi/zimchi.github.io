@@ -21,6 +21,9 @@
   <meta property="og:title" content="Using a Local Proxy to Protect API Keys from Supply-Chain Attacks">
   <meta property="og:description" content="A local proxy holds API keys so a compromised dependency can't steal them.">
   <meta property="og:image" content="https://zimchi.github.io/projects/images/runtime-environment-compromised-dependency-reaching-in.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1023">
+  <meta property="og:image:height" content="831">
   <meta property="og:image:alt" content="A compromised dependency reaching into the runtime environment to steal an API key">
   <meta property="og:url" content="https://zimchi.github.io/projects/proxy-protect-api-keys.html">
   <meta property="og:type" content="article">
@@ -28,11 +31,20 @@
   <meta property="og:locale" content="en_US">
   <meta property="article:author" content="Chielo Zimmerman">
   <meta property="article:published_time" content="2026-10-05">
+  <meta property="article:modified_time" content="2026-10-05">
+  <meta property="article:section" content="Security">
+  <meta property="article:tag" content="supply-chain security">
+  <meta property="article:tag" content="API keys">
+  <meta property="article:tag" content="Docker">
+  <meta property="article:tag" content="Go">
 
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@chieloz">
+  <meta name="twitter:creator" content="@chieloz">
   <meta name="twitter:title" content="Using a Local Proxy to Protect API Keys from Supply-Chain Attacks">
   <meta name="twitter:description" content="A local proxy holds API keys so a compromised dependency can't steal them.">
   <meta name="twitter:image" content="https://zimchi.github.io/projects/images/runtime-environment-compromised-dependency-reaching-in.png">
+  <meta name="twitter:image:alt" content="A compromised dependency reaching into the runtime environment to steal an API key">
 
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js" integrity="sha384-EOXBFmc3gx5mb+vn0vPvvGqACToJD24hhacX5Yx+8NUUQrHIle/Qi5Bg9o3zKwW2" crossorigin="anonymous"></script>
   <script>mermaid.initialize({startOnLoad:true,theme:'dark',themeVariables:{background:'#2a2a2a',primaryColor:'#4a9eff',primaryBorderColor:'#f2f2f2',lineColor:'#f2f2f2',secondaryColor:'#1a1a2e',tertiaryColor:'#16213e',fontSize:'14px'}})</script>
@@ -56,16 +68,26 @@
     },
     "author": {
       "@type": "Person",
-      "name": "Chielo Zimmerman"
+      "name": "Chielo Zimmerman",
+      "url": "https://zimchi.github.io/",
+      "sameAs": [
+        "https://x.com/chieloz"
+      ]
     },
     "publisher": {
-      "@type": "ProfessionalService",
+      "@type": "Organization",
       "name": "ZimChi",
       "url": "https://zimchi.github.io/",
-      "serviceType": "Custom Software Development",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://zimchi.github.io/images/logo.jpg",
+        "width": 557,
+        "height": 576
+      },
       "description": "A technical studio providing custom software development and architectural consulting.",
       "sameAs": [
-        "https://github.com/ZimChi"
+        "https://github.com/ZimChi",
+        "https://x.com/chieloz"
       ]
     }
   }
@@ -80,6 +102,8 @@
         <h1 class="post-title">Using a Local Proxy to Protect API Keys from Supply-Chain Attacks</h1>
         <div class="post-meta">
           <span class="post-author">Chielo Zimmerman</span>
+          <span class="post-divider">•</span>
+          <time datetime="2026-10-05" class="post-date">October 5, 2026</time>
         </div>
         <img src="images/runtime-environment-compromised-dependency-reaching-in.png" alt="A compromised dependency reaching into the runtime environment to steal an API key" class="responsive-img">
       </div>
@@ -111,10 +135,10 @@
           end
           Upstream["api.example.com"]
 
-          Node -->|"GET /endpoint\nHost: api.example.com"| Proxy
+          App -->|"GET /endpoint\nHost: api.example.com"| Proxy
           Proxy -->|"GET /endpoint\nAuthorization: Bearer sk-..."| Upstream
           Upstream -->|"200 OK"| Proxy
-          Proxy -->|"200 OK"| Node
+          Proxy -->|"200 OK"| App
 
           style App fill:#1a1a2e,stroke:#4a9eff
           style Proxy fill:#16213e,stroke:#4a9eff,stroke-dasharray: 5 5
@@ -124,7 +148,7 @@
       <section>
         <h2>Docker Compose handles the internal routing</h2>
         <p>
-          The Docker configuration maps the remote API hostname to the proxy container's IP address on the internal network. The application is unaware of this and sends and receives requests as it normally would.
+          The Docker configuration maps the remote API hostname to the proxy container's IP address on a private bridge network. The application is unaware of this and sends and receives requests as it normally would.
         </p>
 
 <pre><code class="language-yaml">services:
@@ -235,7 +259,7 @@ func main() {
       <section>
         <h2>The result</h2>
         <p>
-          The solution is a trusted Go proxy with minimal dependency risk that holds the API key in its memory, so the application never has anything to leak.
+          The solution is a trusted Go proxy with minimal dependency risk that holds the API key in its memory, so the untrusted application never has anything to leak.
         </p>
       </section>
     </article>

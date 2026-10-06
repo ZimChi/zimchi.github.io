@@ -48,18 +48,6 @@
   margin: 0 auto;
 }
 
-header {
-  text-align: left;
-  margin-bottom: 32px;
-}
-
-header img {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-  opacity: 0.9;
-}
-
 section h1.post-title {
   font-size: 1.5rem;
   margin-bottom:20px;
